@@ -23,27 +23,12 @@ on:
         description: Type of build (Debug or Release)
         type: string
         default: Debug
-      platforms:
-        description: Which platforms to build
-        type: choice
-        options:
-          - macOS and Windows
-          - All platforms
-        default: macOS and Windows
 
 permissions: {}
 
 jobs:
   build:
     name: Build (${{ matrix.artifact-name }})
-
-    if: >-
-      ${{
-        github.event_name != 'workflow_dispatch' ||
-        inputs.platforms == 'All platforms' ||
-        startsWith(matrix.artifact-name, 'Windows') ||
-        matrix.artifact-name == 'macOS'
-      }}
 
     environment: ${{ inputs.environment || '' }}
 
