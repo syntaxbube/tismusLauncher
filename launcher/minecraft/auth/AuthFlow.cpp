@@ -36,6 +36,10 @@ AuthFlow::AuthFlow(AccountData* data, Action action) : Task(), m_data(data)
         m_steps.append(makeShared<EntitlementsStep>(m_data));
         m_steps.append(makeShared<MinecraftProfileStep>(m_data));
         m_steps.append(makeShared<GetSkinStep>(m_data));
+    } else if (data->type == AccountType::SessionToken) {
+        m_steps.append(makeShared<EntitlementsStep>(m_data));
+        m_steps.append(makeShared<MinecraftProfileStep>(m_data, true));
+        m_steps.append(makeShared<GetSkinStep>(m_data));
     }
     changeState(AccountTaskState::STATE_CREATED);
 }

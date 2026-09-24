@@ -859,6 +859,8 @@ SET(LAUNCHER_SOURCES
     ui/themes/HintOverrideProxyStyle.h
     ui/themes/SystemTheme.cpp
     ui/themes/SystemTheme.h
+    ui/themes/TismusClassicTheme.cpp
+    ui/themes/TismusClassicTheme.h
     ui/themes/IconTheme.cpp
     ui/themes/IconTheme.h
     ui/themes/ThemeManager.cpp
@@ -1052,6 +1054,8 @@ SET(LAUNCHER_SOURCES
     ui/dialogs/ImportResourceDialog.h
     ui/dialogs/MSALoginDialog.cpp
     ui/dialogs/MSALoginDialog.h
+    ui/dialogs/SessionTokenLoginDialog.cpp
+    ui/dialogs/SessionTokenLoginDialog.h
     ui/dialogs/NetworkJobFailedDialog.cpp
     ui/dialogs/NetworkJobFailedDialog.h
     ui/dialogs/NewComponentDialog.cpp

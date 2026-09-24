@@ -237,7 +237,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // add the toolbar toggles to the view menu
     ui->viewMenu->addAction(ui->instanceToolBar->toggleViewAction());
-    ui->viewMenu->addAction(ui->newsToolBar->toggleViewAction());
+    if (!BuildConfig.NEWS_RSS_URL.isEmpty()) {
+        ui->viewMenu->addAction(ui->newsToolBar->toggleViewAction());
+    }
 
     updateThemeMenu();
     updateMainToolBar();
@@ -265,8 +267,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
         connect(secretEventFilter, &KonamiCode::triggered, this, &MainWindow::konamiTriggered);
     }
 
-    // Add the news label to the news toolbar.
-    {
+    // Add the news label only when this fork has a news feed configured.
+    if (!BuildConfig.NEWS_RSS_URL.isEmpty()) {
         m_newsChecker.reset(new NewsChecker(APPLICATION->network(), BuildConfig.NEWS_RSS_URL));
         newsLabel = new QToolButton();
         newsLabel->setIcon(QIcon::fromTheme("news"));
@@ -278,6 +280,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
         connect(newsLabel, &QAbstractButton::clicked, this, &MainWindow::newsButtonClicked);
         connect(m_newsChecker.get(), &NewsChecker::newsLoaded, this, &MainWindow::updateNewsLabel);
         updateNewsLabel();
+    } else {
+        ui->newsToolBar->hide();
+        ui->actionMoreNews->setVisible(false);
     }
 
     // Create the instance list widget
@@ -396,8 +401,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // load the news
     {
-        m_newsChecker->reloadNews();
-        updateNewsLabel();
+        if (m_newsChecker) {
+            m_newsChecker->reloadNews();
+            updateNewsLabel();
+        }
     }
 
     if (APPLICATION->updaterEnabled()) {
@@ -644,7 +651,7 @@ void MainWindow::repopulateAccountsMenu()
     auto accounts = APPLICATION->accounts();
     MinecraftAccountPtr defaultAccount = accounts->defaultAccount();
 
-    bool canChangeSkin = defaultAccount && (defaultAccount->accountType() == AccountType::MSA) && !defaultAccount->isActive();
+    bool canChangeSkin = defaultAccount && defaultAccount->accountType() != AccountType::Offline && !defaultAccount->isActive();
     ui->actionManageSkins->setEnabled(canChangeSkin);
 
     QString active_profileId = "";
@@ -794,6 +801,10 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* ev)
 
 void MainWindow::updateNewsLabel()
 {
+    if (!m_newsChecker || !newsLabel) {
+        return;
+    }
+
     if (m_newsChecker->isLoadingNews()) {
         newsLabel->setText(tr("Loading news..."));
         newsLabel->setEnabled(false);
@@ -1420,7 +1431,7 @@ void MainWindow::on_actionManageSkins_triggered()
 {
     auto account = APPLICATION->accounts()->defaultAccount();
 
-    if (account && (account->accountType() == AccountType::MSA) && !account->isActive()) {
+    if (account && account->accountType() != AccountType::Offline && !account->isActive()) {
         SkinManageDialog dialog(this, account);
         dialog.exec();
     }
@@ -1480,6 +1491,10 @@ void MainWindow::on_actionOpenWiki_triggered()
 
 void MainWindow::on_actionMoreNews_triggered()
 {
+    if (!m_newsChecker) {
+        return;
+    }
+
     auto entries = m_newsChecker->getNewsEntries();
     NewsDialog news_dialog(entries, this);
     news_dialog.exec();
@@ -1487,6 +1502,10 @@ void MainWindow::on_actionMoreNews_triggered()
 
 void MainWindow::newsButtonClicked()
 {
+    if (!m_newsChecker) {
+        return;
+    }
+
     auto entries = m_newsChecker->getNewsEntries();
     NewsDialog news_dialog(entries, this);
     news_dialog.toggleArticleList();

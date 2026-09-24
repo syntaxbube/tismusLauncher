@@ -7,7 +7,7 @@
 #include "net/NetUtils.h"
 #include "net/RawHeaderProxy.h"
 
-MinecraftProfileStep::MinecraftProfileStep(AccountData* data) : AuthStep(data) {}
+MinecraftProfileStep::MinecraftProfileStep(AccountData* data, bool requireProfile) : AuthStep(data), m_requireProfile(requireProfile) {}
 
 QString MinecraftProfileStep::describe()
 {
@@ -38,6 +38,11 @@ void MinecraftProfileStep::perform()
 void MinecraftProfileStep::onRequestDone(QByteArray* response)
 {
     if (m_request->error() == QNetworkReply::ContentNotFoundError) {
+        if (m_requireProfile) {
+            emit finished(AccountTaskState::STATE_FAILED_HARD, tr("This token does not have an active Minecraft Java profile."));
+            return;
+        }
+
         // NOTE: Succeed even if we do not have a profile. This is a valid account state.
         m_data->minecraftProfile = MinecraftProfile();
         emit finished(AccountTaskState::STATE_WORKING, tr("Account has no Minecraft profile."));

@@ -44,6 +44,7 @@
 #include "ui/InstanceWindow.h"
 #include "ui/dialogs/CustomMessageBox.h"
 #include "ui/dialogs/MSALoginDialog.h"
+#include "ui/dialogs/SessionTokenLoginDialog.h"
 #include "ui/dialogs/ProfileSelectDialog.h"
 #include "ui/dialogs/ProfileSetupDialog.h"
 #include "ui/dialogs/ProgressDialog.h"
@@ -343,8 +344,9 @@ bool LaunchController::reauthenticateAccount(const MinecraftAccountPtr& account,
     if (button == QMessageBox::StandardButton::Yes) {
         auto* accounts = APPLICATION->accounts();
         const bool isDefault = accounts->defaultAccount() == account;
-        if (account->accountType() == AccountType::MSA) {
-            auto newAccount = MSALoginDialog::newAccount(m_parentWidget);
+        if (account->accountType() == AccountType::MSA || account->accountType() == AccountType::SessionToken) {
+            auto newAccount = account->accountType() == AccountType::MSA ? MSALoginDialog::newAccount(m_parentWidget)
+                                                                         : SessionTokenLoginDialog::newAccount(m_parentWidget);
 
             if (newAccount != nullptr) {
                 accounts->removeAccount(accounts->index(accounts->findAccountByProfileId(account->profileId())));

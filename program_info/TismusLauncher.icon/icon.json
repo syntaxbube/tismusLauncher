@@ -1,0 +1,28 @@
+{
+  "color-space-for-untagged-svg-colors": "display-p3",
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "tismus.svg",
+          "name": "tismusLauncher",
+          "position": {
+            "scale": 19.28,
+            "translation-in-points": [0, 0]
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": ["macOS"]
+  }
+}

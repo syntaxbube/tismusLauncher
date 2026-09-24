@@ -1,0 +1,63 @@
+@Launcher_APP_BINARY_NAME@(6)
+
+
+# NAME
+
+@Launcher_APP_BINARY_NAME@ - a launcher and instance manager for Minecraft.
+
+
+# SYNOPSIS
+
+*@Launcher_APP_BINARY_NAME@* [OPTIONS...]
+
+
+# DESCRIPTION
+
+tismusLauncher is an independent fork of Prism Launcher for managing multiple
+Minecraft installations. It helps install and remove mods and modpacks.
+
+# OPTIONS
+
+*-d, --dir*=DIRECTORY
+	Use DIRECTORY as the launcher root.
+
+*-l, --launch*=INSTANCE_ID
+	Launch the instance specified by INSTANCE_ID.
+
+*--show*=INSTANCE_ID
+	Show the configuration window of the instance specified by INSTANCE_ID.
+
+*--alive*
+	Write a small 'live.check' file after the launcher starts.
+
+*-h, --help*
+	Display help text and exit.
+
+*-v, --version*
+	Display program version and exit.
+
+*-a, --profile*=PROFILE
+	Use the account specified by PROFILE (only valid in combination with --launch).
+
+# ENVIRONMENT
+
+The behavior of the launcher can be customized by the following environment
+variables, besides other common Qt variables:
+
+*QT_LOGGING_RULES*
+	Specifies which logging categories are shown in the logs.
+
+*QT_MESSAGE_PATTERN*
+	Specifies the format in which console output is shown.
+
+# EXIT STATUS
+
+*0*
+	Success
+
+*1*
+	Failure (syntax or usage error; configuration error; unexpected error).
+
+# AUTHORS
+
+@Launcher_Authors@

@@ -87,6 +87,8 @@ class MinecraftAccount : public QObject, public Usable {
 
     static MinecraftAccountPtr createOffline(const QString& username);
 
+    static MinecraftAccountPtr createSessionToken(const QString& accessToken);
+
     static MinecraftAccountPtr loadFromJsonV3(const QJsonObject& json);
 
     static QUuid uuidFromUsername(QString username);
@@ -128,6 +130,9 @@ class MinecraftAccount : public QObject, public Usable {
             } break;
             case AccountType::Offline: {
                 return "offline";
+            } break;
+            case AccountType::SessionToken: {
+                return "msa";
             } break;
             default: {
                 return "unknown";

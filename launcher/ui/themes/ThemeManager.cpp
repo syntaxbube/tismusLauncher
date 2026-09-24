@@ -31,6 +31,7 @@
 #include "ui/themes/CustomTheme.h"
 #include "ui/themes/DarkTheme.h"
 #include "ui/themes/SystemTheme.h"
+#include "ui/themes/TismusClassicTheme.h"
 
 #include "Application.h"
 #include "settings/SettingsObject.h"
@@ -138,6 +139,7 @@ void ThemeManager::initializeWidgets()
     auto darkThemeId = addTheme(std::make_unique<DarkTheme>());
     themeDebugLog() << "Loading Built-in Theme:" << darkThemeId;
     themeDebugLog() << "Loading Built-in Theme:" << addTheme(std::make_unique<BrightTheme>());
+    themeDebugLog() << "Loading Built-in Theme:" << addTheme(std::make_unique<TismusClassicTheme>());
 
     themeDebugLog() << "<> Initializing System Widget Themes";
     QStringList styles = QStyleFactory::keys();
@@ -274,7 +276,7 @@ void ThemeManager::applyCurrentlySelectedTheme(bool initial)
     themeDebugLog() << "<> Icon theme set.";
     auto applicationTheme = settings->get("ApplicationTheme").toString();
     if (applicationTheme == "") {
-        applicationTheme = m_defaultStyle;
+        applicationTheme = "tismus98";
     }
     setApplicationTheme(applicationTheme, initial);
     themeDebugLog() << "<> Application theme set.";

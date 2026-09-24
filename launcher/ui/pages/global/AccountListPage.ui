@@ -53,6 +53,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionAddMicrosoft"/>
+   <addaction name="actionAddSessionToken"/>
    <addaction name="actionAddOffline"/>
    <addaction name="actionRefresh"/>
    <addaction name="actionRemove"/>
@@ -87,6 +88,14 @@
   <action name="actionAddMicrosoft">
    <property name="text">
     <string>&amp;Add Microsoft</string>
+   </property>
+  </action>
+  <action name="actionAddSessionToken">
+   <property name="text">
+    <string>Add Session Token</string>
+   </property>
+   <property name="toolTip">
+    <string>Add a Minecraft Java account using an existing access token</string>
    </property>
   </action>
   <action name="actionAddOffline">

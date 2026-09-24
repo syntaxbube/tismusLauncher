@@ -89,6 +89,17 @@ MinecraftAccountPtr MinecraftAccount::createOffline(const QString& username)
     return account;
 }
 
+MinecraftAccountPtr MinecraftAccount::createSessionToken(const QString& accessToken)
+{
+    auto account = makeShared<MinecraftAccount>();
+    account->data.type = AccountType::SessionToken;
+    account->data.yggdrasilToken.token = accessToken.trimmed();
+    account->data.yggdrasilToken.issueInstant = QDateTime::currentDateTimeUtc();
+    account->data.yggdrasilToken.validity = Validity::Assumed;
+    account->data.validity_ = Validity::Assumed;
+    return account;
+}
+
 QJsonObject MinecraftAccount::saveToJson() const
 {
     return data.saveState();

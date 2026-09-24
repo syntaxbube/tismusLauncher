@@ -9,7 +9,7 @@ class MinecraftProfileStep : public AuthStep {
     Q_OBJECT
 
    public:
-    explicit MinecraftProfileStep(AccountData* data);
+    explicit MinecraftProfileStep(AccountData* data, bool requireProfile = false);
     virtual ~MinecraftProfileStep() noexcept = default;
 
     void perform() override;
@@ -22,4 +22,5 @@ class MinecraftProfileStep : public AuthStep {
    private:
     Net::Request::Ptr m_request;
     NetJob::Ptr m_task;
+    bool m_requireProfile;
 };

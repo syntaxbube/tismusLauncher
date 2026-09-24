@@ -47,6 +47,7 @@
 #include "ui/dialogs/ChooseOfflineNameDialog.h"
 #include "ui/dialogs/CustomMessageBox.h"
 #include "ui/dialogs/MSALoginDialog.h"
+#include "ui/dialogs/SessionTokenLoginDialog.h"
 
 #include "Application.h"
 
@@ -55,7 +56,7 @@ AccountListPage::AccountListPage(QWidget* parent) : QMainWindow(parent), ui(new 
     ui->setupUi(this);
     ui->listView->setEmptyString(
         tr("Welcome!\n"
-           "If you're new here, you can select the \"Add Microsoft\" button to link your Microsoft account."));
+           "Add a Microsoft account or a Minecraft session token to get started."));
     ui->listView->setEmptyMode(VersionListView::String);
     ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -138,11 +139,22 @@ void AccountListPage::on_actionAddMicrosoft_triggered()
     }
 }
 
+void AccountListPage::on_actionAddSessionToken_triggered()
+{
+    auto account = SessionTokenLoginDialog::newAccount(this);
+    if (account) {
+        m_accounts->addAccount(account);
+        if (m_accounts->count() == 1) {
+            m_accounts->setDefaultAccount(account);
+        }
+    }
+}
+
 void AccountListPage::on_actionAddOffline_triggered()
 {
     if (!m_accounts->anyAccountIsValid()) {
         QMessageBox::warning(this, tr("Error"),
-                             tr("You must add a Microsoft account that owns Minecraft before you can add an offline account."
+                             tr("You must add a Microsoft account or a valid session token for a Minecraft account before you can add an offline account."
                                 "<br><br>"
                                 "If you have lost your account you can contact Microsoft for support."));
         return;

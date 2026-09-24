@@ -118,16 +118,11 @@ MSAStep::MSAStep(AccountData* data, bool silent) : AuthStep(data), m_silent(sile
 
     {
         auto replyHandler = new LoggingOAuthHttpServerReplyHandler(this);
-        replyHandler->setCallbackText(QString(R"XXX(
-    <noscript>
-      <meta http-equiv="Refresh" content="0; URL=%1" />
-    </noscript>
-    Login Successful, redirecting...
-    <script>
-      window.location.replace("%1");
-    </script>
-    )XXX")
-                                          .arg(BuildConfig.LOGIN_CALLBACK_URL));
+        QString callbackText = tr("Login successful. You can close this browser tab.");
+        if (!BuildConfig.LOGIN_CALLBACK_URL.isEmpty()) {
+            callbackText += QString(" <a href=\"%1\">%2</a>").arg(BuildConfig.LOGIN_CALLBACK_URL, tr("Return to the launcher."));
+        }
+        replyHandler->setCallbackText(callbackText);
         m_oauth2.setReplyHandler(replyHandler);
     } else {
         m_oauth2.setReplyHandler(new CustomOAuthOobReplyHandler(this));

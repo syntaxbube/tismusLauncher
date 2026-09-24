@@ -1276,17 +1276,10 @@ bool Application::createSetupWizard()
     if (wizardRequired) {
         // set default theme after going into theme wizard
         if (!validIcons) {
-            settings()->set("IconTheme", QString("pe_colored"));
+            settings()->set("IconTheme", QString("multimc"));
         }
         if (!validWidgets) {
-#if defined(Q_OS_WIN32)
-            const QString style =
-                QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark ? QStringLiteral("dark") : QStringLiteral("bright");
-#else
-            const QString style = QStringLiteral("system");
-#endif
-
-            settings()->set("ApplicationTheme", style);
+            settings()->set("ApplicationTheme", QStringLiteral("tismus98"));
         }
 
         m_themeManager->applyCurrentlySelectedTheme(true);
